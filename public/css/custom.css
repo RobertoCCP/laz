@@ -1,0 +1,33 @@
+.tag {
+    display: inline-block;
+}
+
+.custom-checkbox-red:checked {
+    background-color: red;
+}
+
+.custom-checkbox-orange:checked {
+    background-color: orange;
+}
+
+.custom-checkbox-yellow:checked {
+    background-color: yellow;
+}
+
+.custom-checkbox-lightgreen:checked {
+    background-color: lightgreen;
+}
+
+.custom-checkbox-darkgreen:checked {
+    background-color: darkgreen;
+}
+
+.table thead th {
+    color: #fff;
+    /* Otros estilos de color, como el fondo, pueden agregarse aquí */
+}
+
+.table tbody td {
+    color: #000;
+    /* Otros estilos de color, como el fondo, pueden agregarse aquí */
+}
