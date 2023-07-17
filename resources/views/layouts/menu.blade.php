@@ -11,6 +11,9 @@
     <a class="nav-link" href="/clientes">
         <i class=" fas fa-people"></i><span>Clientes</span>
     </a>
+    <a class="nav-link" href="/servicios">
+        <i class=" fas fa-people"></i><span>Servicios</span>
+    </a>
     <a class="nav-link" href="/audits">
         <i class=" fas fa-people"></i><span>Auditorios</span>
     </a>

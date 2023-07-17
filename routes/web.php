@@ -7,7 +7,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AuditController;
-
+use App\Http\Controllers\ServicioController;
 
 
 /*
@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('audits', AuditController::class);
+    Route::resource('servicios', ServicioController::class);
 
 Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');
 Route::delete('/audits/{id}', [AuditController::class, 'destroy'])->name('audits.destroy');

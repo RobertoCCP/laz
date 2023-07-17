@@ -21,7 +21,10 @@ class SeederTablaPermisos extends Seeder
 
             //Operacions sobre tabla blogs
 
-            'generar-pdf'
+            'ver-servicio',
+            'crear-servicio',
+            'editar-servicio',
+            'borrar-servicio'
         ];
 
         foreach ($permisos as $permiso) {
