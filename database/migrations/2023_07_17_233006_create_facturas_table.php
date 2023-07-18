@@ -10,16 +10,16 @@ class CreateFacturasTable extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->increments('id_factura');
-            $table->integer('cedula')->unique();
+            $table->string('cedula', 10)->nullable();
             $table->unsignedBigInteger('id_usuario');
             $table->date('fecha_fac');
-            $table->float('subtotal_fac');
-            $table->float('descuento')->nullable();
-            $table->float('iva');
-            $table->float('total');
+            $table->double('subtotal_fac', 8, 2);
+            $table->double('descuento', 8, 2)->nullable();
+            $table->double('iva', 8, 2);
+            $table->double('total', 8, 2);
             $table->timestamps();
 
-            $table->foreign('cedula')->references('cedula')->on('clientes');
+            $table->foreign('cedula')->references('cedula')->on('clientes')->onDelete('set null');
             $table->foreign('id_usuario')->references('id')->on('users');
         });
     }

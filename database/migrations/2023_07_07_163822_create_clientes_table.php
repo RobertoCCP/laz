@@ -10,7 +10,7 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->integer('cedula')->unique();
+            $table->string('cedula', 10)->unique();
             $table->text('nombre');
             $table->text('apellido');
             $table->text('correo');
@@ -29,4 +29,3 @@ class CreateClientesTable extends Migration
         Schema::dropIfExists('clientes');
     }
 }
-

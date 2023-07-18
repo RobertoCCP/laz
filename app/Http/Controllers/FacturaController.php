@@ -8,6 +8,8 @@ use App\Models\Audit;
 use PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\DB;
+
 
 class FacturaController extends Controller
 {
@@ -53,6 +55,7 @@ class FacturaController extends Controller
     {
         return view('facturas.editar', compact('factura'));
     }
+    
 
     public function update(Request $request, Factura $factura)
     {
@@ -78,11 +81,14 @@ class FacturaController extends Controller
     public function destroy(Factura $factura)
     {
         $oldData = $factura->toArray();
-        $factura->delete();
+        $facturaId = $factura->getAttribute('id_factura');
+        DB::table('facturas')->where('id_factura', $facturaId)->delete();
         $this->createAudit('eliminación', $oldData);
-
+    
         return redirect()->route('facturas.index');
     }
+    
+    
 
     private function createAudit($action, $oldData = null, $newData = null)
     {

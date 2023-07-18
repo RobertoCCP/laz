@@ -9,6 +9,8 @@ class Factura extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_factura';
+
     protected $fillable = ['cedula', 'id_usuario', 'fecha_fac', 'subtotal_fac', 'descuento', 'iva', 'total'];
 
     public function cliente()
