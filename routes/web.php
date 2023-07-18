@@ -8,6 +8,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\FacturaController;
+
 
 
 /*
@@ -32,6 +34,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/audits/generate-pdf', [AuditController::class, 'generatePDF'])->name('audits.generatePDF');
+
 Route::get('/audits/likert', [AuditController::class, 'likert'])->name('audits.likert');
 Route::get('audits/chart', [AuditController::class, 'chart'])->name('audits.chart');
 
@@ -39,19 +42,24 @@ Route::get('audits/chart', [AuditController::class, 'showChart'])->name('audits.
 
 
 Route::get('clientes/generate-pdf', [ClienteController::class, 'generatePDF'])->name('clientes.generatePDF');
+Route::get('facturas/generate-pdf', [FacturaController::class, 'generatePDF'])->name('facturas.generatePDF');
+
 
 
 //y creamos un grupo de rutas protegidas para los controladores
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RolController::class);
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('audits', AuditController::class);
     Route::resource('servicios', ServicioController::class);
+    Route::resource('facturas', FacturaController::class);
 
-Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');
-Route::delete('/audits/{id}', [AuditController::class, 'destroy'])->name('audits.destroy');
-Route::get('/audits/{id}', [AuditController::class, 'show'])->name('audits.show');
+
+    Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');
+    Route::delete('/audits/{id}', [AuditController::class, 'destroy'])->name('audits.destroy');
+    Route::get('/audits/{id}', [AuditController::class, 'show'])->name('audits.show');
+    
 
 });
 
@@ -63,4 +71,3 @@ Route::get('/audits/{id}', [AuditController::class, 'show'])->name('audits.show'
 //     Route::get('clientes', [ClienteController::class, 'index'])->name('clientes.index');
 //     // Agrega aquí otras rutas a restringir
 // });
-

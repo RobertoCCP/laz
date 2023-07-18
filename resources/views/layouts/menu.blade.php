@@ -2,6 +2,10 @@
     <a class="nav-link" href="/home">
         <i class=" fas fa-building"></i><span>Panel General</span>
     </a>
+    <a class="nav-link" href="/audits">
+        <i class=" fas fa-people"></i><span>Auditoria</span>
+    </a>
+
     <a class="nav-link" href="/usuarios">
         <i class=" fas fa-users"></i><span>Usuarios</span>
     </a>
@@ -14,7 +18,8 @@
     <a class="nav-link" href="/servicios">
         <i class=" fas fa-people"></i><span>Servicios</span>
     </a>
-    <a class="nav-link" href="/audits">
-        <i class=" fas fa-people"></i><span>Auditorios</span>
+    <a class="nav-link" href="/facturas">
+        <i class=" fas fa-people"></i><span>Facturas</span>
     </a>
+
 </li>

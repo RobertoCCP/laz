@@ -6,31 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateClientesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->integer('cedula');
+            $table->integer('cedula')->unique();
             $table->text('nombre');
             $table->text('apellido');
             $table->text('correo');
             $table->text('telefono');
             $table->timestamps();
         });
+        
+        // Agregar índice a la columna 'cedula'
+        Schema::table('clientes', function (Blueprint $table) {
+            $table->index('cedula');
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('clientes');
     }
 }
+
