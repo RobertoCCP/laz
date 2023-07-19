@@ -23,7 +23,7 @@ class AuditController extends Controller
     {
         $audits = Audit::orderBy('created_at', 'desc')->paginate(5);
         $userEmail = Auth::user()->email;
-        $tables = ['clientes', 'usuarios', 'roles'];
+        $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
 
         $likertData = [];
 
@@ -97,7 +97,7 @@ class AuditController extends Controller
     public function likert()
     {
         $users = User::all();
-        $tables = ['clientes', 'usuarios', 'roles'];
+        $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
 
         $likertData = [];
 
@@ -161,7 +161,7 @@ class AuditController extends Controller
     public function showChart()
 {
     $users = User::all();
-    $tables = ['clientes', 'usuarios', 'roles'];
+    $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
 
     $likertData = [];
 
