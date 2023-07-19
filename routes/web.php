@@ -61,6 +61,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');
     Route::delete('/audits/{id}', [AuditController::class, 'destroy'])->name('audits.destroy');
     Route::get('/audits/{id}', [AuditController::class, 'show'])->name('audits.show');
+    Route::get('/articulos/{articulo}/modificar', [ArticuloController::class, 'modificar'])->name('articulos.modificar');
+    Route::put('/articulos/{articulo}/actualizar', [ArticuloController::class, 'actualizar'])->name('articulos.actualizar');
+
+
     
     Route::post('/audits/destroyAll', 'AuditController@destroyAll')->name('audits.destroyAll');
 });

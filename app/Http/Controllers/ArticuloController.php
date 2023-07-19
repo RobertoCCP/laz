@@ -5,24 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Articulo;
 use App\Models\Audit;
+
 class ArticuloController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:ver-articulo|crear-articulo|editar-articulo|borrar-articulo')->only('index');
-         $this->middleware('permission:crear-articulo', ['only' => ['create','store']]);
-         $this->middleware('permission:editar-articulo', ['only' => ['edit','update']]);
-         $this->middleware('permission:editar-articulo', ['only' => ['agre','agregar']]);
-         $this->middleware('permission:borrar-articulo', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-articulo|crear-articulo|editar-articulo|borrar-articulo')->only('index');
+        $this->middleware('permission:crear-articulo', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-articulo', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:editar-articulo', ['only' => ['agre', 'agregar']]);
+        $this->middleware('permission:borrar-articulo', ['only' => ['destroy']]);
     }
-   
+
     public function index()
     {
         $articulos = Articulo::paginate(5);
         return view('articulos.index', compact('articulos'));
     }
 
-   
+
     public function create()
     {
         return view('articulos.crear');
@@ -51,7 +52,32 @@ class ArticuloController extends Controller
     {
         return view('articulos.editar', compact('articulo'));
     }
-  
+
+    public function modificar(Articulo $articulo)
+    {
+        return view('articulos.modificar', compact('articulo'));
+    }
+
+    public function actualizar(Request $request, Articulo $articulo)
+    {
+        request()->validate([
+            'nombre' => 'required',
+            'cantidad' => 'required',
+        ]);
+    
+        $oldData = $articulo->toArray();
+    
+        $nuevoStock = $articulo->stock + $request->cantidad;
+        $articulo->update(['stock' => $nuevoStock]);
+    
+        $newData = $articulo->toArray();
+    
+        $this->createAudit('actualización-cantidad', $oldData, $newData);
+    
+        return redirect()->route('articulos.index');
+    }
+    
+
     public function update(Request $request, Articulo $articulo)
     {
         request()->validate([
@@ -67,9 +93,9 @@ class ArticuloController extends Controller
 
         return redirect()->route('articulos.index');
     }
-   
 
-      public function destroy(Articulo $articulo)
+
+    public function destroy(Articulo $articulo)
     {
         $oldData = $articulo->toArray();
 
