@@ -87,6 +87,7 @@ class ArticuloController extends Controller
             'table_name' => 'articulos',
             'old_data' => json_encode($oldData),
             'new_data' => json_encode($newData),
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
             'updated_at' => now(),
         ]);

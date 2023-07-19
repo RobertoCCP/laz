@@ -10,6 +10,11 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                        @can('generar-pdf')
+                                <a href="{{ route('audits.generatePDF') }}" class="btn btn-primary" target="_blank">Generar PDF</a>
+                            @endcan
+                            <a href="{{ route('audits.likert') }}" class="btn btn-primary">Ver Escala de Likert</a>
+                            <a href="{{ route('audits.chart') }}" class="btn btn-primary">Ver Gráfico Circular</a>
                             <!-- Botón para borrar todos los registros de auditoría -->
                             <form action="{{ route('audits.destroyAll') }}" method="POST" class="mb-3">
                                 @csrf
@@ -37,8 +42,6 @@
                                             <td>{{ $audit->created_at }}</td>
                                             <td>{{ $audit->user->email }}</td>
                                             <td>{{ $audit->ip_address }}</td> <!-- Mostramos la dirección IP del usuario -->
-                                            <td>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -4169,3 +4169,41 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 .f-right {
     float: right;
 }
+
+/* Estilos para la leyenda de los gráficos */
+.legend-items {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.legend-text {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Estilos para las tarjetas de los gráficos */
+.card {
+    margin-bottom: 20px;
+}
+
+.card-header h4 {
+    margin: 0;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Estilos para los gráficos */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
