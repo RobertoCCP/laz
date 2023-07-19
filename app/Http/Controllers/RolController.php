@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use App\Models\Audit;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class RolController extends Controller
@@ -22,13 +23,15 @@ class RolController extends Controller
     public function index(Request $request)
     {
         $roles = Role::paginate(5);
-        return view('roles.index', compact('roles'));
+        $usuarios = User::all(); // Obtener todos los usuarios desde la base de datos con sus roles
+        return view('roles.index', compact('roles', 'usuarios'));
     }
 
     public function create()
     {
+        $roles = Role::all(); // Obtener todos los roles desde la base de datos
         $permission = Permission::get();
-        return view('roles.crear', compact('permission'));
+        return view('roles.crear', compact('roles', 'permission'));
     }
 
     public function store(Request $request)
