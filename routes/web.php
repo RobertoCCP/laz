@@ -10,6 +10,7 @@ use App\Http\Controllers\AuditController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ArticuloController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('audits', AuditController::class);
     Route::resource('servicios', ServicioController::class);
     Route::resource('facturas', FacturaController::class);
+    Route::resource('articulos', ArticuloController::class);
 
 
     Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');

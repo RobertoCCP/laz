@@ -21,5 +21,7 @@
     <a class="nav-link" href="/facturas">
         <i class=" fas fa-people"></i><span>Facturas</span>
     </a>
-
+    <a class="nav-link" href="/articulos">
+        <i class=" fas fa-people"></i><span>Articulos</span>
+    </a>
 </li>
