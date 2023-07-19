@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 //Agregamos spatie
 use Spatie\Permission\Traits\HasRoles;
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google2fa_secret'
     ];
 
     /**
@@ -48,5 +50,12 @@ class User extends Authenticatable
     public function audits()
     {
         return $this->hasMany(Audit::class);
+    }
+
+    protected $encryptable = ['google2fa_secret'];
+
+    protected function getEncryptableAttribute(): array
+    {
+        return $this->encryptable ?? [];
     }
 }

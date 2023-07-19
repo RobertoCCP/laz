@@ -9,8 +9,8 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\FacturaController;
-
-
+use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +71,13 @@ Route::group(['middleware' => ['auth']], function () {
 //     Route::get('clientes', [ClienteController::class, 'index'])->name('clientes.index');
 //     // Agrega aquí otras rutas a restringir
 // });
+
+Route::middleware(['2fa'])->group(function () {
+   
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/2fa', function () {
+        return redirect(route('home'));
+    })->name('2fa');
+});
+  
+Route::get('/complete-registration', [RegisterController::class, 'completeRegistration'])->name('complete.registration');
