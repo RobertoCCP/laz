@@ -28,7 +28,11 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <label for="cedula">Cédula</label>
-                                        <input type="number" name="cedula" class="form-control">
+                                        <select name="cedula" class="form-control">
+                                            @foreach ($clientes as $cliente)
+                                            <option value="{{ $cliente->cedula }}">{{ $cliente->cedula }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">

@@ -9,6 +9,8 @@ use PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Support\Facades\DB;
+use App\Models\Cliente;
+
 
 
 class FacturaController extends Controller
@@ -29,8 +31,11 @@ class FacturaController extends Controller
 
     public function create()
     {
-        return view('facturas.crear');
+        $clientes = Cliente::all(); // Obtener todos los clientes desde la base de datos
+        return view('facturas.crear', compact('clientes'));
     }
+    
+    
 
     public function store(Request $request)
     {
