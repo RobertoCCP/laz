@@ -11,16 +11,14 @@ use Dompdf\Options;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cliente;
 
-
-
 class FacturaController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:ver-factura|crear-factura|editar-factura|borrar-factura')->only('index');
-         $this->middleware('permission:crear-factura', ['only' => ['create','store']]);
-         $this->middleware('permission:editar-factura', ['only' => ['edit','update']]);
-         $this->middleware('permission:borrar-factura', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-factura|crear-factura|editar-factura|borrar-factura')->only('index');
+        $this->middleware('permission:crear-factura', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-factura', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:borrar-factura', ['only' => ['destroy']]);
     }
 
     public function index()
@@ -34,8 +32,6 @@ class FacturaController extends Controller
         $clientes = Cliente::all(); // Obtener todos los clientes desde la base de datos
         return view('facturas.crear', compact('clientes'));
     }
-    
-    
 
     public function store(Request $request)
     {
@@ -49,9 +45,15 @@ class FacturaController extends Controller
             'total' => 'required',
         ]);
 
-        $factura = Factura::create($request->all());
+        Audit::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'creación',
+            'table_name' => 'facturas',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
+            'created_at' => now(),
+        ]);
 
-        $this->createAudit('creación', null, $factura->toArray());
+        $factura = Factura::create($request->all());
 
         return redirect()->route('facturas.index');
     }
@@ -60,7 +62,6 @@ class FacturaController extends Controller
     {
         return view('facturas.editar', compact('factura'));
     }
-    
 
     public function update(Request $request, Factura $factura)
     {
@@ -73,12 +74,18 @@ class FacturaController extends Controller
             'iva' => 'required',
             'total' => 'required',
         ]);
+
         $oldData = $factura->toArray();
         $factura->update($request->all());
         $newData = $factura->toArray();
 
-        $this->createAudit('actualización', $oldData, $newData);
-
+        Audit::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'actualización',
+            'table_name' => 'facturas',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
+            'created_at' => now(),
+        ]);
 
         return redirect()->route('facturas.index');
     }
@@ -88,36 +95,29 @@ class FacturaController extends Controller
         $oldData = $factura->toArray();
         $facturaId = $factura->getAttribute('id_factura');
         DB::table('facturas')->where('id_factura', $facturaId)->delete();
-        $this->createAudit('eliminación', $oldData);
-    
-        return redirect()->route('facturas.index');
-    }
-    
-    
 
-    private function createAudit($action, $oldData = null, $newData = null)
-    {
         Audit::create([
             'user_id' => auth()->user()->id,
-            'action' => $action,
-            'table_name' => 'clientes',
-            'old_data' => json_encode($oldData),
-            'new_data' => json_encode($newData),
+            'action' => 'eliminación',
+            'table_name' => 'facturas',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
+
+        return redirect()->route('facturas.index');
     }
+
     public function generatePDF()
     {
         $facturas = Factura::all();
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-    
+
         $dompdf = new Dompdf($pdfOptions);
         $html = view('facturas.pdf', compact('facturas'))->render();
         $dompdf->loadHtml($html);
         $dompdf->render();
-    
+
         $dompdf->stream('reporte_facturas.pdf');
     }
 }

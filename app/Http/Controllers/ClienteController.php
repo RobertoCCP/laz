@@ -13,16 +13,16 @@ class ClienteController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:ver-cliente|crear-cliente|editar-cliente|borrar-cliente')->only('index');
-         $this->middleware('permission:crear-cliente', ['only' => ['create','store']]);
-         $this->middleware('permission:editar-cliente', ['only' => ['edit','update']]);
-         $this->middleware('permission:borrar-cliente', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-cliente|crear-cliente|editar-cliente|borrar-cliente')->only('index');
+        $this->middleware('permission:crear-cliente', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-cliente', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-cliente', ['only' => ['destroy']]);
     }
     
     public function index()
     {       
-         $clientes = Cliente::paginate(5);
-         return view('clientes.index', compact('clientes'));
+        $clientes = Cliente::paginate(5);
+        return view('clientes.index', compact('clientes'));
     }
 
     public function create()
@@ -90,10 +90,12 @@ class ClienteController extends Controller
             'table_name' => 'clientes',
             'old_data' => json_encode($oldData),
             'new_data' => json_encode($newData),
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
             'updated_at' => now(),
         ]);
     }
+
     public function generatePDF()
     {
         $clientes = Cliente::all();

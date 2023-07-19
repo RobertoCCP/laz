@@ -19,34 +19,18 @@ class RolController extends Controller
         $this->middleware('permission:borrar-rol', ['only' => ['destroy']]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $roles = Role::paginate(5);
         return view('roles.index', compact('roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $permission = Permission::get();
         return view('roles.crear', compact('permission'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -62,23 +46,6 @@ class RolController extends Controller
         return redirect()->route('roles.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $role = Role::find($id);
@@ -90,13 +57,6 @@ class RolController extends Controller
         return view('roles.editar', compact('role', 'permission', 'rolePermissions'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -115,12 +75,6 @@ class RolController extends Controller
         return redirect()->route('roles.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $role = Role::findOrFail($id);
@@ -132,14 +86,6 @@ class RolController extends Controller
         return redirect()->route('roles.index');
     }
 
-    /**
-     * Create an audit entry for the specified action, table, and item ID.
-     *
-     * @param string $action
-     * @param string $table
-     * @param int $itemId
-     * @return void
-     */
     private function createAuditEntry($action, $table, $itemId)
     {
         $userId = Auth::user()->id;
@@ -149,6 +95,7 @@ class RolController extends Controller
             'action' => $action,
             'table_name' => $table,
             'item_id' => $itemId,
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
         ]);
     }
 }

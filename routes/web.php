@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/audits/{id}', [AuditController::class, 'destroy'])->name('audits.destroy');
     Route::get('/audits/{id}', [AuditController::class, 'show'])->name('audits.show');
     
-
+    Route::post('/audits/destroyAll', 'AuditController@destroyAll')->name('audits.destroyAll');
 });
 
 

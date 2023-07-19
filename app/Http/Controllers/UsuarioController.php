@@ -45,9 +45,9 @@ class UsuarioController extends Controller
             'user_id' => auth()->user()->id,
             'action' => 'creación',
             'table_name' => 'usuarios',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
         ]);
-    
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
@@ -56,7 +56,6 @@ class UsuarioController extends Controller
         $user->assignRole($request->input('roles'));
 
         return redirect()->route('usuarios.index');
-
     }
 
     public function edit($id)
@@ -81,6 +80,7 @@ class UsuarioController extends Controller
             'user_id' => auth()->user()->id,
             'action' => 'actualización',
             'table_name' => 'usuarios',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
         ]);
 
@@ -108,8 +108,10 @@ class UsuarioController extends Controller
             'user_id' => auth()->user()->id,
             'action' => 'eliminación',
             'table_name' => 'usuarios',
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
         ]);
+
         return redirect()->route('usuarios.index');
     }
 

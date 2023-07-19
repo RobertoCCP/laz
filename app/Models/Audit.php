@@ -9,8 +9,13 @@ class Audit extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'action', 'table_name', 'old_data', 'new_data'];
+    protected $fillable = ['user_id', 'action', 'table_name', 'old_data', 'new_data', 'ip_address'];
 
+    protected $casts = [
+        'old_data' => 'array',
+        'new_data' => 'array',
+    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);

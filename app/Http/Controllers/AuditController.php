@@ -21,48 +21,18 @@ class AuditController extends Controller
 
     public function index()
     {
-        $audits = Audit::orderBy('created_at', 'desc')->paginate(5);
+        $audits = Audit::with('user')->orderBy('created_at', 'desc')->paginate(5);
         $userEmail = Auth::user()->email;
-        $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
+        $tables = ['clientes', 'usuarios', 'roles', 'servicios', 'facturas'];
 
-        $likertData = [];
-
-        foreach ($audits as $audit) {
-            $user = User::findOrFail($audit->user_id);
-
-            $userData = [
-                'user' => $user,
-                'actions' => [],
-            ];
-
-            foreach ($tables as $table) {
-                $actionCounts = Audit::where('user_id', $user->id)
-                    ->where('table_name', $table)
-                    ->select(DB::raw('SUM(CASE WHEN action = "never" THEN 1 ELSE 0 END) as never'), 
-                             DB::raw('SUM(CASE WHEN action = "once" THEN 1 ELSE 0 END) as once'), 
-                             DB::raw('SUM(CASE WHEN action = "twice" THEN 1 ELSE 0 END) as twice'), 
-                             DB::raw('SUM(CASE WHEN action = "three_times" THEN 1 ELSE 0 END) as three_times'), 
-                             DB::raw('SUM(CASE WHEN action = "excessive" THEN 1 ELSE 0 END) as excessive'),
-                             DB::raw('COUNT(*) as total'))
-                    ->groupBy('user_id')
-                    ->groupBy('table_name')
-                    ->first();
-
-                $userData['actions'][$table] = $this->getLikertScale($actionCounts);
-            }
-
-            $likertData[] = $userData;
-        }
-
-        return view('audits.index', compact('audits', 'userEmail', 'likertData', 'tables'));
+        return view('audits.index', compact('audits', 'userEmail', 'tables'));
     }
 
     public function destroy($id)
     {
-        $audit = Audit::findOrFail($id);
-        $audit->delete();
+        Audit::truncate();
 
-        return redirect()->route('audits.index')->with('success', 'Registro de auditoría eliminado correctamente.');
+        return redirect()->route('audits.index')->with('success', 'Todos los registros de auditoría han sido eliminados correctamente.');
     }
 
     public function show($id)
@@ -159,36 +129,36 @@ class AuditController extends Controller
     }
 
     public function showChart()
-{
-    $users = User::all();
-    $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
+    {
+        $users = User::all();
+        $tables = ['clientes', 'usuarios', 'roles','servicios','facturas'];
 
-    $likertData = [];
+        $likertData = [];
 
-    foreach ($users as $user) {
-        $userData = [
-            'user' => $user,
-            'actions' => [],
-        ];
+        foreach ($users as $user) {
+            $userData = [
+                'user' => $user,
+                'actions' => [],
+            ];
 
-        foreach ($tables as $table) {
-            $actionCounts = Audit::where('user_id', $user->id)
-                ->where('table_name', $table)
-                ->select(DB::raw('SUM(CASE WHEN action = "never" THEN 1 ELSE 0 END) as never'),
-                    DB::raw('SUM(CASE WHEN action = "once" THEN 1 ELSE 0 END) as once'),
-                    DB::raw('SUM(CASE WHEN action = "twice" THEN 1 ELSE 0 END) as twice'),
-                    DB::raw('SUM(CASE WHEN action = "three_times" THEN 1 ELSE 0 END) as three_times'),
-                    DB::raw('SUM(CASE WHEN action = "excessive" THEN 1 ELSE 0 END) as excessive'),
-                    DB::raw('COUNT(*) as total'))
-                ->groupBy('table_name')
-                ->first();
+            foreach ($tables as $table) {
+                $actionCounts = Audit::where('user_id', $user->id)
+                    ->where('table_name', $table)
+                    ->select(DB::raw('SUM(CASE WHEN action = "never" THEN 1 ELSE 0 END) as never'),
+                        DB::raw('SUM(CASE WHEN action = "once" THEN 1 ELSE 0 END) as once'),
+                        DB::raw('SUM(CASE WHEN action = "twice" THEN 1 ELSE 0 END) as twice'),
+                        DB::raw('SUM(CASE WHEN action = "three_times" THEN 1 ELSE 0 END) as three_times'),
+                        DB::raw('SUM(CASE WHEN action = "excessive" THEN 1 ELSE 0 END) as excessive'),
+                        DB::raw('COUNT(*) as total'))
+                    ->groupBy('table_name')
+                    ->first();
 
-            $userData['actions'][$table] = $actionCounts ? $this->getLikertScale($actionCounts) : null;
+                $userData['actions'][$table] = $actionCounts ? $this->getLikertScale($actionCounts) : null;
+            }
+
+            $likertData[] = $userData;
         }
 
-        $likertData[] = $userData;
+        return view('audits.chart', compact('likertData', 'tables'));
     }
-
-    return view('audits.chart', compact('likertData', 'tables'));
-}
 }

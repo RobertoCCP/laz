@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Servicio;
 use App\Models\Audit;
 
-
 class ServicioController extends Controller
 {
     function __construct()
@@ -23,12 +22,10 @@ class ServicioController extends Controller
         return view('servicios.index', compact('servicios'));
     }
 
-   
     public function create()
     {
         return view('servicios.crear');
     }
-
 
     public function store(Request $request)
     {
@@ -44,16 +41,17 @@ class ServicioController extends Controller
 
         return redirect()->route('servicios.index');
     }
+
     public function show($idS)
     {
         //
     }
+
     public function edit(Servicio $servicio)
     {
         return view('servicios.editar', compact('servicio'));
     }
 
-  
     public function update(Request $request, Servicio $servicio)
     {
         request()->validate([
@@ -71,8 +69,7 @@ class ServicioController extends Controller
         return redirect()->route('servicios.index');
     }
 
-
-      public function destroy(Servicio $servicio)
+    public function destroy(Servicio $servicio)
     {
         $oldData = $servicio->toArray();
 
@@ -82,6 +79,7 @@ class ServicioController extends Controller
 
         return redirect()->route('servicios.index');
     }
+
     private function createAudit($action, $oldData = null, $newData = null)
     {
         Audit::create([
@@ -90,6 +88,7 @@ class ServicioController extends Controller
             'table_name' => 'servicios',
             'old_data' => json_encode($oldData),
             'new_data' => json_encode($newData),
+            'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
             'created_at' => now(),
             'updated_at' => now(),
         ]);
