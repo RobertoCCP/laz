@@ -4207,3 +4207,28 @@ canvas {
     max-width: 100%;
     height: auto;
 }
+
+
+.side-menus {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.side-menus a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.side-menus a:hover {
+    background-color: #007bff;
+}
+
+.side-menus a i {
+    font-size: 18px;
+    margin-right: 10px;
+}
