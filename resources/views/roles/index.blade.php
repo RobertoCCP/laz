@@ -7,7 +7,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-5">
                 <div class="card">
                     <div class="card-body">
 
@@ -47,26 +47,21 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row mt-5">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="mb-4">Usuarios y sus Roles</h4>
                         <table class="table table-striped">
                             <thead style="background-color:#6777ef">
-                                <th style="color:#fff;">Nombre del Usuario</th>
-                                <th style="color:#fff;">Roles</th>
+                                <th style="color:#fff;">Rol</th>
                             </thead>
                             <tbody>
-                                @foreach($usuarios ?? '' as $usuario)
+                                @foreach($roles as $role)
                                 <tr>
-                                    <td>{{ $usuario->name }}</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $role->users_count }}</td>
                                     <td>
-                                        @foreach($usuario->roles as $rol)
-                                        <span class="badge badge-info">{{ $rol->name }}</span>
-                                        @endforeach
+                                        <a class="btn btn-info" href="{{ route('roles.users', $role->id) }}">Ver Usuarios</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -76,5 +71,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection

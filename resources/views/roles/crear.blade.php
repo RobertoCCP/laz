@@ -10,37 +10,24 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-
-                            @if ($errors->any())
-                                <div class="alert alert-dark alert-dismissible fade show" role="alert">
-                                    <strong>¡Revise los campos!</strong>
-                                    @foreach ($errors->all() as $error)
-                                        <span class="badge badge-danger">{{ $error }}</span>
+                            {!! Form::open(['route' => 'roles.store', 'method' => 'POST']) !!}
+                            <div class="form-group">
+                                <label for="name">Nombre del Rol:</label>
+                                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            </div>
+                            <div class="form-group">
+                                <label>Permisos para este Rol:</label>
+                                <div class="row">
+                                    @foreach ($permission as $value)
+                                        <div class="col-lg-4">
+                                            <div class="form-check">
+                                                {{ Form::checkbox('permission[]', $value->id, false, ['class' => 'form-check-input', 'id' => 'permission'.$value->id]) }}
+                                                <label class="form-check-label" for="permission{{ $value->id }}">
+                                                    {{ $value->name }}
+                                                </label>
+                                            </div>
+                                        </div>
                                     @endforeach
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-
-                            {!! Form::open(array('route' => 'roles.store','method'=>'POST')) !!}
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <label for="">Nombre del Rol:</label>
-                                        {!! Form::text('name', null, array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <label for="">Permisos para este Rol:</label>
-                                        <br/>
-                                        @foreach($permission as $value)
-                                            <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
-                                                {{ $value->name }}</label>
-                                            <br/>
-                                        @endforeach
-                                    </div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar</button>
@@ -48,19 +35,24 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5>Roles existentes y cantidad de usuarios con cada rol:</h5>
+                            <h5>Usuarios con sus roles</h5>
                             <ul class="list-group">
-                                @foreach($roles ?? '' as $role)
+                                @foreach ($roles as $role)
                                     <li class="list-group-item">
-                                        <a href="{{ route('roles.edit', $role->id) }}">
-                                            {{ $role->name }}
-                                        </a>
-                                        <span class="badge badge-primary">
-                                            {{ $role->users->count() }} usuarios
-                                        </span>
+                                        <strong>{{ $role->name }}</strong>
+                                        @if ($role->users->count() > 0)
+                                            <ul>
+                                                @foreach ($role->users as $user)
+                                                    <li>{{ $user->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <p>No hay usuarios con este rol</p>
+                                        @endif
                                     </li>
                                 @endforeach
                             </ul>

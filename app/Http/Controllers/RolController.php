@@ -101,4 +101,19 @@ class RolController extends Controller
             'ip_address' => request()->ip(), // Agregar la dirección IP de la solicitud
         ]);
     }
+
+    public function users($id)
+{
+    $role = Role::findOrFail($id);
+    $users = $role->users;
+    return view('roles.users', compact('role', 'users'));
+}
+public function permissions($id)
+{
+    $user = User::findOrFail($id);
+    // Aquí puedes obtener y pasar los permisos del usuario a la vista si lo deseas
+    // $permissions = $user->getAllPermissions();
+    return view('usuarios.permissions', compact('user'));
+}
+
 }

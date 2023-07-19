@@ -63,8 +63,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/audits/destroyAll', 'AuditController@destroyAll')->name('audits.destroyAll');
 });
 
-
-
+Route::get('roles/{role}/users', [RolController::class, 'users'])->name('roles.users');
+Route::get('roles/{id}/users', 'RolController@users')->name('roles.users');
+Route::get('users/{id}/permissions', 'UsuarioController@permissions')->name('users.permissions');
 
 // Route::group(['middleware' => 'no-access'], function () {
 //     // Rutas a restringir
